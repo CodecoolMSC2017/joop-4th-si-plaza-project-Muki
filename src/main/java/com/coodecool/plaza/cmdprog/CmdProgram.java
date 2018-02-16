@@ -186,6 +186,8 @@ public class CmdProgram {
                         myShop.close();
                         System.out.println("You have closed the shop");
                         break;
+                    case 0:
+                        running = false;
                 }
         } catch (ShopIsClosedException sice) {
                 System.out.println(sice.getMessage());
