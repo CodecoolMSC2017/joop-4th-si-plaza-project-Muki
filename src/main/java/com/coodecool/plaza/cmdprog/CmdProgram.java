@@ -2,8 +2,10 @@ package com.coodecool.plaza.cmdprog;
 
 import com.coodecool.plaza.api.*;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -185,6 +187,66 @@ public class CmdProgram {
                     case 5:
                         myShop.close();
                         System.out.println("You have closed the shop");
+                        break;
+                    case 6:
+                        Product product = null;
+                        boolean creatingProduct = true;
+                        while (creatingProduct) {
+                            String[] headerCloth = new String[] {"Enter the barcode: ", "Enter the manufacturer: ",
+                                    "Enter the name: ", "Enter the material: ", "Enter the type: "};
+                            String[] headerFood = new String[] {"Enter the barcode: ", "Enter the manufacturer: ",
+                            "Enter the name: ", "Enter the calorie: ", "Enter the date: (yyyy-mm-dd)"};
+                            System.out.println("What kind of product do you want to create? (Cloth or Food)");
+                            String clothOrFood = scan.nextLine().toLowerCase();
+                            if (clothOrFood.equals("cloth")) {
+                                String[] attributes = new String[headerCloth.length];
+                                for (int i = 0; i < headerCloth.length; i++) {
+                                    System.out.println(headerCloth[i]);
+                                    attributes[i] = scan.nextLine().toLowerCase();
+                                }
+                                String tempManufacturer = attributes[1];
+                                String tempName = attributes[2];
+                                String tempMaterial = attributes[3];
+                                String tempType = attributes[4];
+                                try {
+                                    long tempBarcode = Long.parseLong(attributes[0]);
+                                    product = new ClothingProduct(tempBarcode, tempManufacturer, tempName, tempMaterial, tempType);
+                                    creatingProduct = false;
+                                } catch (NumberFormatException nfe) {
+                                    System.out.println(nfe.getMessage());
+                                }
+                            } else if (clothOrFood.equals("food")) {
+                                String[] attributes = new String[headerFood.length];
+                                for (int i = 0; i < headerFood.length; i++) {
+                                    System.out.println(headerFood[i]);
+                                    attributes[i] = scan.nextLine().toLowerCase();
+                                }
+                                String tempManufacturer = attributes[1];
+                                String tempName = attributes[2];
+                                try {
+                                    long tempBarcode = Long.parseLong(attributes[0]);
+                                    int tempCalorie = Integer.parseInt(attributes[3]);
+                                    Date tempDate = date.parse(attributes[4]);
+                                    product = new FoodProduct(tempBarcode, tempManufacturer, tempName, tempCalorie, tempDate);
+                                    creatingProduct = false;
+                                } catch (ParseException pe) {
+                                    System.out.println(pe.getMessage());
+                                }
+                            } else {
+                                System.out.println("Please enter a valid option!");
+                            }
+                        }
+                        System.out.println("Enter the quantity:");
+                        String tempQuantityS = scan.nextLine();
+                        System.out.println("Enter the price:");
+                        String tempPriceS = scan.nextLine();
+                        try {
+                            int tempQuantity = Integer.parseInt(tempQuantityS);
+                            float tempPrice = Float.parseFloat(tempPriceS);
+                            myShop.addNewProduct(product, tempQuantity, tempPrice);
+                        } catch (ProductAlreadyExistsException paee) {
+                            System.out.println(paee.getMessage());
+                        }
                         break;
                     case 0:
                         running = false;

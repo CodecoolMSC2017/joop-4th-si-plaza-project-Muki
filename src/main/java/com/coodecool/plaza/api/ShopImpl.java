@@ -85,6 +85,26 @@ public class ShopImpl implements Shop {
         return null;
     }
 
+    public String toString() {
+        String allProducts = "";
+        allProducts += "ClothingProducts: ";
+        for (Map.Entry<Long, ShopImplEntry> entry : products.entrySet()) {
+            if (entry.getValue().getProduct() instanceof ClothingProduct) {
+                allProducts += "\n" + entry.getValue().getProduct().toString() + " | quantity: " + entry.getValue().getQuantity() + " | price: " + entry.getValue().getPrice() + " ft";
+            }
+        }
+
+        allProducts += "\nFoodProducts: ";
+        for (Map.Entry<Long, ShopImplEntry> entry : products.entrySet()) {
+            if (entry.getValue().getProduct() instanceof FoodProduct) {
+                allProducts += "\n" + entry.getValue().getProduct().toString() + " | quantity: " + entry.getValue().getQuantity() + " | price: " + entry.getValue().getPrice() + " ft";
+            }
+
+        }
+        return allProducts;
+
+    }
+
         class ShopImplEntry {
 
             private Product product;
@@ -131,10 +151,6 @@ public class ShopImpl implements Shop {
 
             public void setPrice(int price) {
                 this.price = price;
-            }
-
-            public String toString() {
-                return "Products: " + getProduct() + "\nQuantity: " + getQuantity() + "\nPrice: " + getPrice();
             }
         }
 }

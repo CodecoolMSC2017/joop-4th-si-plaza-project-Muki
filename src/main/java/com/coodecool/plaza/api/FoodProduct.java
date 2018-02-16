@@ -26,6 +26,10 @@ public class FoodProduct extends Product {
         return calories;
     }
 
+    public Date getBestBefore() {
+        return bestBefore;
+    }
+
     public String toString() {
         return "barcode :" + barcode +"\nmanufacturer :" + manufacturer + "\nname :" + name + "\ncalories :" + calories +"\nstill eatable : " +isStillConsumable();
     }
